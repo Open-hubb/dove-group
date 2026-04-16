@@ -1,0 +1,2040 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dove Group of Companies — Built for Africa's Growing Economy</title>
+  <meta name="description" content="A diversified group of six subsidiaries spanning hospitality, communications, solar energy, construction, agriculture, and money remittances in Sierra Leone." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+
+  <style>
+    /* ========== CSS VARIABLES ========== */
+    :root {
+      --red: #CC0000;
+      --red-dark: #990000;
+      --red-light: #FF1A1A;
+      --yellow: #FFC107;
+      --yellow-dark: #E5AC00;
+      --yellow-light: #FFD54F;
+      --black: #0A0A0A;
+      --dark: #111111;
+      --dark-card: #1C1C1C;
+      --dark-elevated: #222222;
+      --dark-border: #333333;
+      --white: #FFFFFF;
+      --gray-100: #F5F5F5;
+      --gray-200: #E5E5E5;
+      --gray-300: #D4D4D4;
+      --gray-400: #A3A3A3;
+      --gray-500: #737373;
+      --gray-600: #525252;
+      --gray-700: #404040;
+
+      --font-display: 'Syne', sans-serif;
+      --font-serif: 'Instrument Serif', serif;
+      --font-body: 'Space Grotesk', sans-serif;
+
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    /* ========== RESET ========== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    body {
+      font-family: var(--font-body);
+      background: var(--black);
+      color: var(--white);
+      overflow-x: hidden;
+      line-height: 1.7;
+    }
+    a { text-decoration: none; color: inherit; }
+    button { cursor: pointer; border: none; background: none; font-family: inherit; }
+    img { max-width: 100%; height: auto; display: block; }
+    ul { list-style: none; }
+
+    /* ========== LOADING SCREEN ========== */
+    .loader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .loader-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      opacity: 0;
+    }
+    .loader-logo svg { width: 48px; height: 48px; }
+    .loader-logo span {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: var(--white);
+    }
+    .loader-logo span em { font-style: normal; color: var(--red); }
+    .loader-bar-track {
+      width: 200px;
+      height: 2px;
+      background: var(--dark-border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .loader-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--red), var(--yellow));
+      border-radius: 2px;
+    }
+
+    /* ========== LOGO IMAGE ========== */
+    .logo-img {
+      height: 104px;
+      width: auto;
+      display: block;
+    }
+    .loader .logo-img { height: 100px; }
+    .footer .logo-img { height: 44px; }
+
+    /* ========== NAVIGATION ========== */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 20px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.4s var(--ease-out-expo);
+      backdrop-filter: blur(0px);
+    }
+    .nav.scrolled {
+      padding: 14px 48px;
+      background: rgba(10, 10, 10, 0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .nav-logo svg { width: 36px; height: 36px; }
+    .nav-logo-text {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .nav-logo-text span { color: var(--red); }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--gray-400);
+      transition: color 0.3s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--red);
+      transition: width 0.3s var(--ease-out-expo);
+    }
+    .nav-links a:hover { color: var(--white); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-cta {
+      padding: 10px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--white);
+      background: var(--red);
+      border-radius: 12px;
+      transition: all 0.3s var(--ease-out-expo);
+      box-shadow: 4px 4px 10px rgba(0,0,0,0.5), -2px -2px 8px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.1);
+      border: none;
+    }
+    .nav-cta:hover {
+      background: var(--red-light);
+      transform: translateY(-1px);
+      box-shadow: 6px 6px 14px rgba(0,0,0,0.6), -3px -3px 10px rgba(255,255,255,0.05), inset 0 1px 0 rgba(255,255,255,0.15);
+    }
+    .nav-cta:active {
+      transform: translateY(0);
+      box-shadow: inset 3px 3px 6px rgba(0,0,0,0.4), inset -2px -2px 4px rgba(255,255,255,0.03);
+    }
+
+    /* Mobile menu */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px;
+      z-index: 1001;
+    }
+    .nav-hamburger span {
+      width: 24px;
+      height: 2px;
+      background: var(--white);
+      transition: all 0.3s var(--ease-out-expo);
+    }
+    .nav-hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .nav-hamburger.active span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(10,10,10,0.98);
+      backdrop-filter: blur(30px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s var(--ease-out-expo);
+    }
+    .mobile-menu.active { opacity: 1; pointer-events: all; }
+    .mobile-menu a {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--gray-400);
+      transition: color 0.3s;
+    }
+    .mobile-menu a:hover { color: var(--white); }
+
+    /* ========== HERO SECTION ========== */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    #hero-canvas {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(204, 0, 0, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 30%, rgba(255, 193, 7, 0.08) 0%, transparent 50%),
+        linear-gradient(180deg, rgba(10,10,10,0.3) 0%, rgba(10,10,10,0.6) 50%, var(--black) 100%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 140px 48px 80px;
+      width: 100%;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background: linear-gradient(145deg, #1C1C1C, #141414);
+      border: none;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--red-light);
+      margin-bottom: 32px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      box-shadow: 5px 5px 12px rgba(0,0,0,0.5), -3px -3px 8px rgba(255,255,255,0.03), inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+    .hero-badge .pulse {
+      width: 8px;
+      height: 8px;
+      background: var(--red);
+      border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.5); }
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(48px, 7vw, 96px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      margin-bottom: 24px;
+      max-width: 900px;
+    }
+    .hero-title .line { display: block; overflow: hidden; }
+    .hero-title .line-inner {
+      display: block;
+      transform: translateY(110%);
+    }
+    .hero-title .accent {
+      background: linear-gradient(135deg, var(--red) 0%, var(--yellow) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-title .serif-accent {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+    }
+    .hero-subtitle {
+      font-size: clamp(16px, 1.8vw, 20px);
+      color: var(--gray-400);
+      max-width: 600px;
+      margin-bottom: 48px;
+      line-height: 1.7;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 64px;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 32px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--white);
+      background: var(--red);
+      border-radius: 14px;
+      transition: all 0.3s var(--ease-out-expo);
+      box-shadow: 6px 6px 14px rgba(0,0,0,0.5), -3px -3px 8px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.12);
+      position: relative;
+      overflow: hidden;
+      border: none;
+    }
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.08), transparent);
+      opacity: 1;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 8px 8px 18px rgba(0,0,0,0.6), -4px -4px 10px rgba(255,255,255,0.05), inset 0 1px 0 rgba(255,255,255,0.15);
+    }
+    .btn-primary:hover::before { opacity: 0.6; }
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: inset 4px 4px 8px rgba(0,0,0,0.5), inset -2px -2px 4px rgba(255,255,255,0.03);
+    }
+    .btn-primary:focus-visible { outline: 2px solid var(--red-light); outline-offset: 3px; }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 32px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--white);
+      background: #1A1A1A;
+      border: none;
+      border-radius: 14px;
+      transition: all 0.3s var(--ease-out-expo);
+      box-shadow: 6px 6px 14px rgba(0,0,0,0.5), -3px -3px 8px rgba(255,255,255,0.04), inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+    .btn-secondary:hover {
+      background: #202020;
+      transform: translateY(-2px);
+      box-shadow: 8px 8px 18px rgba(0,0,0,0.6), -4px -4px 10px rgba(255,255,255,0.05);
+    }
+    .btn-secondary:active {
+      transform: translateY(0);
+      box-shadow: inset 4px 4px 8px rgba(0,0,0,0.5), inset -2px -2px 4px rgba(255,255,255,0.03);
+    }
+    .btn-secondary:focus-visible { outline: 2px solid var(--gray-400); outline-offset: 3px; }
+
+    /* Hero stats */
+    .hero-stats {
+      display: flex;
+      gap: 48px;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .hero-stat {
+      position: relative;
+      padding: 14px 20px 14px 20px;
+      background: linear-gradient(145deg, #1C1C1C, #151515);
+      border-radius: 14px;
+      box-shadow: 6px 6px 16px rgba(0,0,0,0.5), -3px -3px 10px rgba(255,255,255,0.03), inset 0 1px 0 rgba(255,255,255,0.04);
+      border-left: 2px solid;
+      border-image: linear-gradient(180deg, var(--red), var(--yellow)) 1;
+    }
+    .hero-stat::before {
+      display: none;
+    }
+    .hero-stat-value {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--white);
+    }
+    .hero-stat-label {
+      font-size: 13px;
+      color: var(--gray-500);
+      letter-spacing: 0.03em;
+    }
+
+    /* Scroll indicator */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+    }
+    .scroll-indicator span {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gray-500);
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: var(--dark-border);
+      position: relative;
+      overflow: hidden;
+    }
+    .scroll-line::after {
+      content: '';
+      position: absolute;
+      top: -100%;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, transparent, var(--red));
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+    @keyframes scrollLine {
+      0% { top: -100%; }
+      100% { top: 100%; }
+    }
+
+    /* ========== SECTION COMMON ========== */
+    .section {
+      padding: 120px 48px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 16px;
+    }
+    .section-label .line {
+      width: 32px;
+      height: 1px;
+      background: var(--red);
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+    .section-title .serif {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+    }
+    .section-subtitle {
+      font-size: 18px;
+      color: var(--gray-400);
+      max-width: 560px;
+      line-height: 1.7;
+    }
+    .section-header {
+      margin-bottom: 64px;
+    }
+
+    /* ========== ABOUT SECTION ========== */
+    .about {
+      position: relative;
+      overflow: hidden;
+    }
+    .about::before {
+      content: '';
+      position: absolute;
+      top: -200px;
+      right: -200px;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(204, 0, 0, 0.06), transparent 70%);
+      pointer-events: none;
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+    .about-text p {
+      font-size: 17px;
+      color: var(--gray-400);
+      line-height: 1.8;
+      margin-bottom: 24px;
+    }
+    .about-text p:first-of-type::first-letter {
+      font-family: var(--font-serif);
+      font-size: 56px;
+      float: left;
+      line-height: 1;
+      margin-right: 12px;
+      margin-top: 4px;
+      color: var(--red);
+    }
+    .about-visual {
+      position: relative;
+    }
+    .about-img-main {
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+    .about-img-main img {
+      width: 100%;
+      height: 480px;
+      object-fit: cover;
+    }
+    .about-img-main::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 50%, rgba(10,10,10,0.6) 100%);
+      pointer-events: none;
+    }
+    .about-float-badge {
+      position: absolute;
+      bottom: -24px;
+      left: -24px;
+      z-index: 3;
+      background: linear-gradient(145deg, #d40000, #b00000);
+      border-radius: 18px;
+      padding: 20px 28px;
+      text-align: center;
+      border: none;
+      box-shadow: 8px 8px 20px rgba(0,0,0,0.5), -4px -4px 12px rgba(255,80,80,0.08), inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+    .about-float-badge .number {
+      font-family: var(--font-display);
+      font-size: 40px;
+      font-weight: 800;
+      color: var(--white);
+    }
+    .about-float-badge .label {
+      font-size: 13px;
+      color: rgba(255,255,255,0.8);
+      margin-top: 2px;
+    }
+    .about-float-motto {
+      position: absolute;
+      top: -16px;
+      right: -16px;
+      z-index: 3;
+      background: linear-gradient(145deg, #ffd000, #e0a800);
+      color: var(--black);
+      border-radius: 14px;
+      padding: 14px 20px;
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: 700;
+      border: none;
+      box-shadow: 8px 8px 20px rgba(0,0,0,0.4), -4px -4px 12px rgba(255,220,50,0.08), inset 0 1px 0 rgba(255,255,255,0.2);
+      max-width: 180px;
+      line-height: 1.4;
+    }
+
+    /* ========== SUBSIDIARIES ========== */
+    .subsidiaries {
+      position: relative;
+      background: linear-gradient(180deg, #0D0D0D 0%, #111111 50%, #0D0D0D 100%);
+      padding: 120px 0;
+      overflow: hidden;
+    }
+    .subsidiaries::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(204,0,0,0.3), var(--dark-border), rgba(255,193,7,0.3), transparent);
+    }
+    .subsidiaries::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(204, 0, 0, 0.04), transparent 60%);
+      pointer-events: none;
+    }
+    .subsidiaries .section {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+    .sub-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .sub-card {
+      position: relative;
+      background: linear-gradient(145deg, #1C1C1C, #151515);
+      border: none;
+      border-radius: 20px;
+      padding: 40px 32px;
+      overflow: hidden;
+      transition: all 0.5s var(--ease-out-expo);
+      cursor: default;
+      box-shadow: 8px 8px 20px rgba(0,0,0,0.5), -4px -4px 12px rgba(255,255,255,0.03), inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+    .sub-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--red), var(--yellow));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s var(--ease-out-expo);
+    }
+    .sub-card:hover::before { transform: scaleX(1); }
+    .sub-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 12px 12px 28px rgba(0,0,0,0.6), -6px -6px 16px rgba(255,255,255,0.04), 0 0 30px rgba(204, 0, 0, 0.06);
+      background: linear-gradient(145deg, #212121, #191919);
+    }
+    .sub-card-num {
+      font-family: var(--font-display);
+      font-size: 64px;
+      font-weight: 800;
+      color: rgba(255,255,255,0.06);
+      position: absolute;
+      top: 16px;
+      right: 24px;
+      line-height: 1;
+    }
+    .sub-card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      position: relative;
+      box-shadow: 4px 4px 10px rgba(0,0,0,0.4), -2px -2px 6px rgba(255,255,255,0.03);
+    }
+    .sub-card-icon svg {
+      width: 24px;
+      height: 24px;
+    }
+    .sub-card-icon.red {
+      background: rgba(204, 0, 0, 0.1);
+      color: var(--red);
+    }
+    .sub-card-icon.yellow {
+      background: rgba(255, 193, 7, 0.1);
+      color: var(--yellow);
+    }
+    .sub-card h3 {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+    .sub-card p {
+      font-size: 15px;
+      color: var(--gray-400);
+      line-height: 1.7;
+    }
+
+    /* ========== GALLERY / SHOWCASE ========== */
+    .gallery {
+      position: relative;
+      overflow: hidden;
+      padding: 120px 0;
+    }
+    .gallery .section { padding-top: 0; padding-bottom: 0; }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: auto auto;
+      gap: 16px;
+    }
+    .gallery-item {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      cursor: pointer;
+      box-shadow: 8px 8px 20px rgba(0,0,0,0.5), -4px -4px 12px rgba(255,255,255,0.03);
+    }
+    .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s var(--ease-out-expo);
+    }
+    .gallery-item:hover img { transform: scale(1.05); }
+    .gallery-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(10,10,10,0.7) 100%);
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .gallery-item:hover::after { opacity: 0.5; }
+    .gallery-caption {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      right: 16px;
+      z-index: 2;
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--white);
+    }
+    .gallery-caption small {
+      display: block;
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.7);
+      margin-top: 2px;
+    }
+    .gallery-item.tall { grid-row: span 2; }
+    .gallery-item.tall img { height: 100%; min-height: 400px; }
+    .gallery-item:not(.tall) img { height: 240px; }
+
+    /* ========== PRODUCTS & SERVICES ========== */
+    .products {
+      position: relative;
+      overflow: hidden;
+    }
+    .products::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1000px;
+      height: 600px;
+      background: radial-gradient(ellipse, rgba(255, 193, 7, 0.03), transparent 70%);
+      pointer-events: none;
+    }
+    .products-marquee-wrapper {
+      margin-top: 48px;
+      overflow: hidden;
+      padding: 20px 0;
+    }
+    .products-marquee {
+      display: flex;
+      gap: 16px;
+      animation: marquee 30s linear infinite;
+      width: max-content;
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .marquee-item {
+      flex-shrink: 0;
+      padding: 16px 32px;
+      background: linear-gradient(145deg, #1C1C1C, #151515);
+      border: none;
+      border-radius: 100px;
+      font-size: 15px;
+      font-weight: 500;
+      white-space: nowrap;
+      color: var(--gray-300);
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 5px 5px 12px rgba(0,0,0,0.5), -3px -3px 8px rgba(255,255,255,0.03);
+    }
+    .marquee-item:hover {
+      color: var(--white);
+      background: linear-gradient(145deg, #1E1E1E, #181818);
+      box-shadow: 7px 7px 16px rgba(0,0,0,0.6), -4px -4px 10px rgba(255,255,255,0.04), 0 0 15px rgba(204, 0, 0, 0.06);
+    }
+    .marquee-item .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--red);
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 32px;
+    }
+    .product-item {
+      padding: 28px;
+      background: linear-gradient(145deg, #1C1C1C, #151515);
+      border: none;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: all 0.4s var(--ease-out-expo);
+      box-shadow: 6px 6px 16px rgba(0,0,0,0.5), -3px -3px 10px rgba(255,255,255,0.03), inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+    .product-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 10px 10px 22px rgba(0,0,0,0.6), -5px -5px 14px rgba(255,255,255,0.04), 0 0 20px rgba(204,0,0,0.05);
+    }
+    .product-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(204, 0, 0, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--red);
+      box-shadow: 4px 4px 10px rgba(0,0,0,0.4), -2px -2px 6px rgba(255,255,255,0.03);
+    }
+    .product-item:nth-child(even) .product-icon {
+      background: rgba(255, 193, 7, 0.08);
+      color: var(--yellow);
+    }
+    .product-icon svg { width: 20px; height: 20px; }
+    .product-item h4 {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .product-item p {
+      font-size: 13px;
+      color: var(--gray-500);
+      margin-top: 2px;
+    }
+
+    /* ========== LARGE STATEMENT ========== */
+    .statement {
+      padding: 160px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .statement::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(204, 0, 0, 0.08), transparent 70%);
+      pointer-events: none;
+    }
+    .statement-text {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 4.5vw, 72px);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .statement-text .serif {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: 400;
+    }
+    .statement-text .gradient {
+      background: linear-gradient(135deg, var(--red), var(--yellow));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ========== CONTACT ========== */
+    .contact {
+      position: relative;
+      background: linear-gradient(180deg, #0D0D0D 0%, #111111 50%, #0A0A0A 100%);
+      overflow: hidden;
+    }
+    .contact::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(204,0,0,0.3), var(--dark-border), rgba(255,193,7,0.3), transparent);
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+    }
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    .contact-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .contact-item-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(204, 0, 0, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: var(--red);
+      box-shadow: 4px 4px 10px rgba(0,0,0,0.4), -2px -2px 6px rgba(255,255,255,0.03);
+    }
+    .contact-item-icon svg { width: 20px; height: 20px; }
+    .contact-item h4 {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .contact-item p, .contact-item a {
+      font-size: 15px;
+      color: var(--gray-400);
+      line-height: 1.6;
+    }
+    .contact-item a:hover { color: var(--red); }
+
+    /* Contact form */
+    .contact-form {
+      background: linear-gradient(145deg, #1C1C1C, #151515);
+      border: none;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 8px 8px 20px rgba(0,0,0,0.5), -4px -4px 12px rgba(255,255,255,0.03), inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+    .contact-form h3 {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--gray-400);
+      margin-bottom: 8px;
+      letter-spacing: 0.02em;
+    }
+    .form-group input, .form-group textarea, .form-group select {
+      width: 100%;
+      padding: 14px 16px;
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--white);
+      background: linear-gradient(145deg, #181818, #121212);
+      border: none;
+      border-radius: 12px;
+      outline: none;
+      transition: box-shadow 0.3s;
+      box-shadow: inset 4px 4px 8px rgba(0,0,0,0.5), inset -2px -2px 6px rgba(255,255,255,0.03);
+    }
+    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+      box-shadow: inset 4px 4px 8px rgba(0,0,0,0.5), inset -2px -2px 6px rgba(255,255,255,0.03), 0 0 0 2px rgba(204, 0, 0, 0.3);
+    }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+    .form-group select { cursor: pointer; }
+    .form-group select option { background: var(--dark-card); }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* ========== FOOTER ========== */
+    .footer {
+      border-top: 1px solid var(--dark-border);
+      padding: 64px 48px 32px;
+      background: var(--black);
+    }
+    .footer-top {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+    .footer-brand .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .footer-brand .footer-logo svg { width: 32px; height: 32px; }
+    .footer-brand .footer-logo-text {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+    .footer-brand .footer-logo-text span { color: var(--red); }
+    .footer-brand p {
+      font-size: 14px;
+      color: var(--gray-500);
+      line-height: 1.7;
+      max-width: 300px;
+    }
+    .footer-col h4 {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 20px;
+    }
+    .footer-col a {
+      display: block;
+      font-size: 14px;
+      color: var(--gray-500);
+      padding: 6px 0;
+      transition: color 0.3s;
+    }
+    .footer-col a:hover { color: var(--white); }
+    .footer-bottom {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding-top: 24px;
+      border-top: 1px solid var(--dark-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-bottom p {
+      font-size: 13px;
+      color: var(--gray-600);
+    }
+    .footer-social {
+      display: flex;
+      gap: 12px;
+    }
+    .footer-social a {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(145deg, #1C1C1C, #151515);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gray-500);
+      transition: transform 0.3s, color 0.3s, box-shadow 0.3s;
+      box-shadow: 6px 6px 14px rgba(0,0,0,0.5), -3px -3px 8px rgba(255,255,255,0.03), inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+    .footer-social a:hover {
+      color: var(--white);
+      transform: translateY(-2px);
+      box-shadow: 8px 8px 20px rgba(0,0,0,0.5), -4px -4px 12px rgba(255,255,255,0.03), 0 0 12px rgba(204,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+    .footer-social a:active {
+      transform: translateY(0);
+      box-shadow: inset 4px 4px 8px rgba(0,0,0,0.5), inset -2px -2px 4px rgba(255,255,255,0.03);
+    }
+    .footer-social a svg { width: 18px; height: 18px; }
+
+    /* ========== GRAIN TEXTURE ========== */
+    .grain {
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      pointer-events: none;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 128px 128px;
+    }
+
+    /* ========== CURSOR FOLLOWER ========== */
+    .cursor-glow {
+      position: fixed;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(204, 0, 0, 0.06), transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s linear;
+      display: none;
+    }
+    @media (pointer: fine) {
+      .cursor-glow { display: block; }
+    }
+
+    /* ========== RESPONSIVE ========== */
+
+    /* Tablet landscape / small desktop */
+    @media (max-width: 1024px) {
+      .nav { padding: 16px 24px; }
+      .nav.scrolled { padding: 12px 24px; }
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      .nav-cta { display: none; }
+      .section { padding: 80px 24px; }
+      .hero-content { padding: 120px 24px 60px; }
+      .about-grid { grid-template-columns: 1fr; gap: 48px; }
+      .sub-grid { grid-template-columns: repeat(2, 1fr); }
+      .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .statement { padding: 100px 24px; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .gallery-item.tall { grid-row: span 1; }
+      .gallery-item.tall img { min-height: 240px; }
+      .logo-img { height: 80px; }
+      .sub-card { padding: 32px 24px; }
+      .sub-card-num { font-size: 48px; }
+      .contact-form { padding: 32px 24px; }
+    }
+
+    /* Tablet portrait */
+    @media (max-width: 768px) {
+      .nav { padding: 14px 20px; }
+      .nav.scrolled { padding: 10px 20px; }
+      .logo-img { height: 64px; }
+      .nav-logo-text { font-size: 17px; }
+      .section { padding: 64px 20px; }
+      .hero-content { padding: 110px 20px 50px; }
+      .hero-subtitle { font-size: 16px; margin-bottom: 32px; }
+      .hero-actions { flex-direction: column; align-items: stretch; gap: 12px; }
+      .btn-primary, .btn-secondary { justify-content: center; padding: 14px 24px; font-size: 14px; width: 100%; }
+      .hero-stats { flex-wrap: wrap; gap: 12px; }
+      .hero-stat { flex: 1; min-width: calc(50% - 8px); }
+      .hero-stat-value { font-size: 22px; }
+      .hero-stat-label { font-size: 12px; }
+      .sub-grid { grid-template-columns: 1fr; }
+      .sub-card { padding: 28px 22px; }
+      .sub-card h3 { font-size: 19px; }
+      .sub-card p { font-size: 14px; }
+      .form-row { grid-template-columns: 1fr; }
+      .footer { padding: 48px 20px 24px; }
+      .footer-top { grid-template-columns: 1fr; gap: 32px; }
+      .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+      .products-grid { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .gallery-item:not(.tall) img { height: 200px; }
+      .gallery-item.tall img { min-height: 200px; }
+      .statement { padding: 80px 20px; }
+      .statement-text { font-size: clamp(26px, 6vw, 48px); }
+      .section-title { font-size: clamp(28px, 6vw, 48px); }
+      .section-subtitle { font-size: 16px; }
+      .about-img-main img { height: 320px; }
+      .about-float-badge { bottom: -16px; left: -8px; padding: 16px 20px; border-radius: 14px; }
+      .about-float-badge .number { font-size: 32px; }
+      .about-float-motto { top: -12px; right: -8px; padding: 10px 14px; font-size: 12px; max-width: 160px; }
+      .about-text p:first-of-type::first-letter { font-size: 44px; }
+      .contact-grid { gap: 36px; }
+      .contact-form { padding: 28px 20px; }
+      .contact-form h3 { font-size: 20px; }
+      .product-item { padding: 20px; }
+      .marquee-item { padding: 12px 24px; font-size: 14px; }
+      .mobile-menu a { font-size: 26px; }
+      .scroll-indicator { bottom: 20px; }
+    }
+
+    /* Mobile phones */
+    @media (max-width: 480px) {
+      .nav { padding: 12px 16px; }
+      .nav.scrolled { padding: 8px 16px; }
+      .logo-img { height: 52px; }
+      .nav-logo-text { font-size: 15px; }
+      .nav-logo { gap: 8px; }
+      .section { padding: 48px 16px; }
+      .hero { min-height: 100svh; }
+      .hero-content { padding: 100px 16px 40px; }
+      .hero-title { font-size: clamp(32px, 9vw, 48px); margin-bottom: 16px; }
+      .hero-badge { padding: 6px 12px; font-size: 11px; margin-bottom: 24px; }
+      .hero-subtitle { font-size: 15px; margin-bottom: 24px; line-height: 1.6; }
+      .hero-actions { gap: 10px; margin-bottom: 32px; }
+      .btn-primary, .btn-secondary { padding: 13px 20px; font-size: 14px; border-radius: 12px; }
+      .hero-stats { gap: 10px; }
+      .hero-stat { padding: 12px 14px; border-radius: 12px; }
+      .hero-stat-value { font-size: 20px; }
+      .hero-stat-label { font-size: 11px; }
+      .section-header { margin-bottom: 40px; }
+      .section-title { font-size: clamp(24px, 7vw, 36px); margin-bottom: 12px; }
+      .section-subtitle { font-size: 14px; line-height: 1.6; }
+      .section-label { font-size: 11px; }
+      .about-grid { gap: 32px; }
+      .about-text p { font-size: 15px; }
+      .about-text p:first-of-type::first-letter { font-size: 36px; margin-right: 8px; }
+      .about-img-main img { height: 260px; }
+      .about-float-badge { bottom: -12px; left: 0; padding: 14px 18px; border-radius: 12px; }
+      .about-float-badge .number { font-size: 28px; }
+      .about-float-badge .label { font-size: 11px; }
+      .about-float-motto { top: -10px; right: 0; padding: 8px 12px; font-size: 11px; max-width: 140px; border-radius: 10px; }
+      .subsidiaries { padding: 64px 0; }
+      .sub-grid { gap: 16px; }
+      .sub-card { padding: 24px 18px; border-radius: 16px; }
+      .sub-card h3 { font-size: 18px; }
+      .sub-card p { font-size: 13px; }
+      .sub-card-num { font-size: 40px; right: 16px; }
+      .sub-card-icon { width: 42px; height: 42px; border-radius: 12px; margin-bottom: 18px; }
+      .gallery { padding: 64px 0; }
+      .gallery-grid { grid-template-columns: 1fr; gap: 12px; }
+      .gallery-item.tall img, .gallery-item:not(.tall) img { height: 220px; }
+      .gallery-caption { font-size: 13px; bottom: 12px; left: 12px; right: 12px; }
+      .gallery-caption small { font-size: 11px; }
+      .products-marquee-wrapper { margin-top: 24px; padding: 12px 0; }
+      .marquee-item { padding: 10px 20px; font-size: 13px; }
+      .products-grid { gap: 12px; margin-top: 20px; }
+      .product-item { padding: 18px 16px; gap: 12px; border-radius: 14px; }
+      .product-item h4 { font-size: 14px; }
+      .product-item p { font-size: 12px; }
+      .product-icon { width: 38px; height: 38px; border-radius: 10px; }
+      .statement { padding: 60px 16px; }
+      .statement-text { font-size: clamp(22px, 6.5vw, 32px); line-height: 1.2; }
+      .contact-grid { gap: 28px; }
+      .contact-item { gap: 12px; }
+      .contact-item-icon { width: 38px; height: 38px; border-radius: 10px; }
+      .contact-item h4 { font-size: 14px; }
+      .contact-item p, .contact-item a { font-size: 13px; }
+      .contact-form { padding: 24px 16px; border-radius: 16px; }
+      .contact-form h3 { font-size: 18px; margin-bottom: 18px; }
+      .form-group { margin-bottom: 14px; }
+      .form-group label { font-size: 12px; margin-bottom: 6px; }
+      .form-group input, .form-group textarea, .form-group select { padding: 12px 14px; font-size: 14px; border-radius: 10px; }
+      .form-group textarea { min-height: 100px; }
+      .footer { padding: 40px 16px 20px; }
+      .footer-top { gap: 28px; margin-bottom: 28px; }
+      .footer-brand p { font-size: 13px; }
+      .footer-brand .footer-logo-text { font-size: 18px; }
+      .footer-col h4 { font-size: 12px; margin-bottom: 14px; }
+      .footer-col a { font-size: 13px; padding: 5px 0; }
+      .footer-bottom { padding-top: 18px; }
+      .footer-bottom p { font-size: 12px; }
+      .footer-social a { width: 36px; height: 36px; border-radius: 10px; }
+      .footer-social a svg { width: 16px; height: 16px; }
+      .mobile-menu a { font-size: 22px; }
+      .mobile-menu { gap: 24px; }
+      .scroll-indicator { display: none; }
+    }
+
+    /* Very small phones (SE, Galaxy Fold, etc.) */
+    @media (max-width: 360px) {
+      .hero-title { font-size: 28px; }
+      .hero-content { padding: 90px 14px 32px; }
+      .logo-img { height: 44px; }
+      .nav-logo-text { font-size: 13px; }
+      .nav { padding: 10px 12px; }
+      .section { padding: 40px 14px; }
+      .hero-stat { min-width: 100%; }
+      .btn-primary, .btn-secondary { padding: 12px 16px; font-size: 13px; }
+      .sub-card { padding: 20px 16px; }
+      .contact-form { padding: 20px 14px; }
+      .statement-text { font-size: 20px; }
+      .about-float-badge { padding: 12px 14px; }
+      .about-float-badge .number { font-size: 24px; }
+      .about-float-motto { font-size: 10px; max-width: 120px; padding: 6px 10px; }
+    }
+
+    /* Fix for iOS safe areas / notch */
+    @supports (padding: env(safe-area-inset-bottom)) {
+      .nav { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+      .footer { padding-bottom: max(20px, env(safe-area-inset-bottom)); }
+      .hero-content { padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+    }
+
+    /* Landscape phone orientation */
+    @media (max-height: 500px) and (orientation: landscape) {
+      .hero { min-height: auto; padding: 80px 0 40px; }
+      .hero-content { padding-top: 80px; padding-bottom: 24px; }
+      .scroll-indicator { display: none; }
+      .hero-stats { gap: 12px; }
+    }
+
+    /* ========== ANIMATIONS ========== */
+    .reveal { opacity: 0; transform: translateY(40px); }
+    .reveal-left { opacity: 0; transform: translateX(-40px); }
+    .reveal-right { opacity: 0; transform: translateX(40px); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .reveal, .reveal-left, .reveal-right { opacity: 1; transform: none; }
+      .hero-title .line-inner { transform: none; }
+      .hero-subtitle, .hero-actions, .hero-stats { opacity: 1; transform: none; }
+      .scroll-indicator { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div class="loader" id="loader">
+    <div class="loader-logo">
+      <img src="public/dovegrouplogo-clean.svg" alt="Dove Group Logo" class="logo-img" />
+    </div>
+    <div class="loader-bar-track">
+      <div class="loader-bar" id="loaderBar"></div>
+    </div>
+  </div>
+
+  <!-- Grain Texture -->
+  <div class="grain"></div>
+
+  <!-- Cursor Glow -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <a href="#" class="nav-logo">
+      <img src="public/dovegrouplogo-clean.svg" alt="Dove Group Logo" class="logo-img" />
+      <span class="nav-logo-text"><span>DOVE</span> GROUP</span>
+    </a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#subsidiaries">Subsidiaries</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#products">Products</a>
+      <a href="#contact">Contact</a>
+      <a href="marketplace.html" style="color:var(--yellow);font-weight:600;">🛒 Shop</a>
+    </div>
+    <a href="marketplace.html" class="nav-cta" style="background:var(--yellow);color:var(--black);">Shop Now</a>
+    <div class="nav-hamburger" id="hamburger" aria-label="Toggle menu" role="button" tabindex="0">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#about">About</a>
+    <a href="#subsidiaries">Subsidiaries</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#products">Products</a>
+    <a href="#contact">Contact</a>
+    <a href="#contact" class="nav-cta" style="margin-top:16px;">Get in Touch</a>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <div class="pulse"></div>
+        Sierra Leone's Diversified Conglomerate
+      </div>
+      <h1 class="hero-title">
+        <span class="line"><span class="line-inner">Dove Group</span></span>
+        <span class="line"><span class="line-inner"><span class="serif-accent">of</span> <span class="accent">Companies</span></span></span>
+      </h1>
+      <p class="hero-subtitle">A diversified group of six subsidiaries spanning hospitality, communications, solar energy, construction, agriculture, and money remittances — powering communities across Sierra Leone.</p>
+      <div class="hero-actions">
+        <a href="#subsidiaries" class="btn-primary">
+          Explore Our Subsidiaries
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a href="#contact" class="btn-secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Contact Us
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-value">Est. 2022</div>
+          <div class="hero-stat-label">Founded</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">6</div>
+          <div class="hero-stat-label">Subsidiaries</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-value">Freetown</div>
+          <div class="hero-stat-label">Sierra Leone</div>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="about section" id="about">
+    <div class="about-grid">
+      <div class="about-text reveal-left">
+        <div class="section-label"><span class="line"></span> Who We Are</div>
+        <h2 class="section-title">Built for <span class="serif">Africa's</span> Growing Economy</h2>
+        <p>Dove Group of Companies is a Sierra Leonean conglomerate founded in 2022, operating across six dynamic sectors. From renewable energy to foreign exchange, from fresh farm produce to building and construction, we are committed to delivering quality services and products that power communities and grow businesses across the region.</p>
+        <p>Our group brings together expertise in hospitality, communications, solar energy, building and construction, agriculture, and money remittances — making us a one-stop group of companies trusted by individuals and businesses alike.</p>
+      </div>
+      <div class="about-visual reveal-right">
+        <div class="about-img-main">
+          <img src="public/team-photo.jpeg" alt="Dove Group team — We Listen, We Care, And We Deliver" />
+        </div>
+        <div class="about-float-badge">
+          <div class="number">6</div>
+          <div class="label">Business Sectors</div>
+        </div>
+        <div class="about-float-motto">We Listen, We Care, And We Deliver</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Subsidiaries Section -->
+  <section class="subsidiaries" id="subsidiaries">
+    <div class="section">
+      <div class="section-header reveal">
+        <div class="section-label"><span class="line"></span> Our Companies</div>
+        <h2 class="section-title">Six Subsidiaries,<br>One <span class="serif">Vision</span></h2>
+        <p class="section-subtitle">Each subsidiary serves a critical sector of Sierra Leone's economy, united under the Dove Group's commitment to quality and community impact.</p>
+      </div>
+      <div class="sub-grid">
+        <div class="sub-card reveal">
+          <div class="sub-card-num">01</div>
+          <div class="sub-card-icon red">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+          </div>
+          <h3>Dove Communications</h3>
+          <p>Providing mobile handsets, smart TVs, and telecommunications products for connected living across Sierra Leone.</p>
+        </div>
+        <div class="sub-card reveal">
+          <div class="sub-card-num">02</div>
+          <div class="sub-card-icon yellow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+          </div>
+          <h3>Dove Solar</h3>
+          <p>Delivering solar generators and clean energy solutions for homes and businesses seeking reliable, sustainable power.</p>
+        </div>
+        <div class="sub-card reveal">
+          <div class="sub-card-num">03</div>
+          <div class="sub-card-icon red">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="1" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <h3>Dove Foreign Exchange</h3>
+          <p>Offering reliable currency exchange and money remittance services, connecting Sierra Leone to the world.</p>
+        </div>
+        <div class="sub-card reveal">
+          <div class="sub-card-num">04</div>
+          <div class="sub-card-icon yellow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg>
+          </div>
+          <h3>Dove Farm</h3>
+          <p>Producing and distributing palm oil, cooking oil, and agricultural produce for local consumption and export markets.</p>
+        </div>
+        <div class="sub-card reveal">
+          <div class="sub-card-num">05</div>
+          <div class="sub-card-icon red">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <h3>Dove Construction</h3>
+          <p>Delivering professional building and construction services for residential and commercial projects.</p>
+        </div>
+        <div class="sub-card reveal">
+          <div class="sub-card-num">06</div>
+          <div class="sub-card-icon yellow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></svg>
+          </div>
+          <h3>Dove Petroleum</h3>
+          <p>Supplying petroleum products and energy distribution to serve the growing local market.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery / Showcase -->
+  <section class="gallery" id="gallery">
+    <div class="section">
+      <div class="section-header reveal">
+        <div class="section-label"><span class="line"></span> Our Brands</div>
+        <h2 class="section-title">See Us <span class="serif">in Action</span></h2>
+        <p class="section-subtitle">From farm-fresh produce to cutting-edge telecommunications — a glimpse into Dove Group's diverse operations.</p>
+      </div>
+      <div class="gallery-grid">
+        <div class="gallery-item tall reveal">
+          <img src="public/communications-flyer.jpeg" alt="Dove Communications — Communication made easy" />
+          <div class="gallery-caption">Dove Communications<small>Making life better</small></div>
+        </div>
+        <div class="gallery-item reveal">
+          <img src="public/palm-oil-flyer.jpeg" alt="Dove Pure Palm Oil — 100% Natural" />
+          <div class="gallery-caption">Dove Pure Palm Oil<small>100% Natural</small></div>
+        </div>
+        <div class="gallery-item reveal">
+          <img src="public/phone-product.jpeg" alt="Tecno Spark 30c — Available at Dove Communications" />
+          <div class="gallery-caption">Latest Smartphones<small>Dove Communications</small></div>
+        </div>
+        <div class="gallery-item tall reveal">
+          <img src="public/farm-photo.jpeg" alt="Dove Farm — From Farm to Table" />
+          <div class="gallery-caption">Dove Farm<small>From Farm to Table</small></div>
+        </div>
+        <div class="gallery-item reveal">
+          <img src="public/cooking-oil-flyer.jpeg" alt="Dove Pure Vegetable Cooking Oil" />
+          <div class="gallery-caption">Dove Pure Cooking Oil<small>Eat Healthy, Live Long</small></div>
+        </div>
+        <div class="gallery-item reveal">
+          <img src="public/cooking-oil-bottle.jpeg" alt="Dove Pure Vegetable Cooking Oil — Coming Soon" />
+          <div class="gallery-caption">Dove Pure Cooking Oil<small>Coming Soon</small></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Statement -->
+  <section class="statement">
+    <p class="statement-text reveal">
+      Powering <span class="serif">communities</span>,<br>
+      building <span class="gradient">Africa's future</span>,<br>
+      one sector at a time.
+    </p>
+  </section>
+
+  <!-- Products & Services -->
+  <section class="products section" id="products">
+    <div class="section-header reveal">
+      <div class="section-label"><span class="line"></span> What We Offer</div>
+      <h2 class="section-title">Products & <span class="serif">Services</span></h2>
+      <p class="section-subtitle">From telecommunications to agriculture, our diverse portfolio serves the full spectrum of Sierra Leone's growing economy.</p>
+    </div>
+
+    <div class="products-marquee-wrapper">
+      <div class="products-marquee">
+        <div class="marquee-item"><span class="dot"></span>Mobile Handsets</div>
+        <div class="marquee-item"><span class="dot"></span>Solar Generators</div>
+        <div class="marquee-item"><span class="dot"></span>Smart TVs</div>
+        <div class="marquee-item"><span class="dot"></span>Palm Oil</div>
+        <div class="marquee-item"><span class="dot"></span>Cooking Oil</div>
+        <div class="marquee-item"><span class="dot"></span>Currency Exchange</div>
+        <div class="marquee-item"><span class="dot"></span>Money Remittances</div>
+        <div class="marquee-item"><span class="dot"></span>Construction Services</div>
+        <div class="marquee-item"><span class="dot"></span>Petroleum Products</div>
+        <div class="marquee-item"><span class="dot"></span>Agricultural Produce</div>
+        <div class="marquee-item"><span class="dot"></span>Mobile Handsets</div>
+        <div class="marquee-item"><span class="dot"></span>Solar Generators</div>
+        <div class="marquee-item"><span class="dot"></span>Smart TVs</div>
+        <div class="marquee-item"><span class="dot"></span>Palm Oil</div>
+        <div class="marquee-item"><span class="dot"></span>Cooking Oil</div>
+        <div class="marquee-item"><span class="dot"></span>Currency Exchange</div>
+        <div class="marquee-item"><span class="dot"></span>Money Remittances</div>
+        <div class="marquee-item"><span class="dot"></span>Construction Services</div>
+        <div class="marquee-item"><span class="dot"></span>Petroleum Products</div>
+        <div class="marquee-item"><span class="dot"></span>Agricultural Produce</div>
+      </div>
+    </div>
+
+    <div class="products-grid">
+      <div class="product-item reveal">
+        <div class="product-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><line x1="12" x2="12.01" y1="18" y2="18"/></svg>
+        </div>
+        <div><h4>Mobile Handsets</h4><p>Quality smartphones & feature phones</p></div>
+      </div>
+      <div class="product-item reveal">
+        <div class="product-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+        </div>
+        <div><h4>Solar Generators</h4><p>Clean, sustainable energy systems</p></div>
+      </div>
+      <div class="product-item reveal">
+        <div class="product-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="15" x="2" y="7" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg>
+        </div>
+        <div><h4>Smart TVs</h4><p>Connected entertainment for every home</p></div>
+      </div>
+      <div class="product-item reveal">
+        <div class="product-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
+        </div>
+        <div><h4>Palm Oil & Cooking Oil</h4><p>Premium agricultural produce</p></div>
+      </div>
+      <div class="product-item reveal">
+        <div class="product-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" x2="12" y1="1" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        </div>
+        <div><h4>Currency Exchange</h4><p>Competitive rates, reliable service</p></div>
+      </div>
+      <div class="product-item reveal">
+        <div class="product-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div><h4>Building & Construction</h4><p>Residential & commercial projects</p></div>
+      </div>
+      <div class="product-item reveal">
+        <div class="product-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z"/></svg>
+        </div>
+        <div><h4>Petroleum Products</h4><p>Energy distribution for local markets</p></div>
+      </div>
+      <div class="product-item reveal">
+        <div class="product-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <div><h4>Money Remittances</h4><p>Connecting Sierra Leone to the world</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="contact" id="contact">
+    <div class="section">
+      <div class="section-header reveal">
+        <div class="section-label"><span class="line"></span> Get In Touch</div>
+        <h2 class="section-title">Let's Work <span class="serif">Together</span></h2>
+        <p class="section-subtitle">Whether you need our products, services, or a partnership — we'd love to hear from you.</p>
+      </div>
+      <div class="contact-grid">
+        <div class="contact-info reveal-left">
+          <div class="contact-item">
+            <div class="contact-item-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <h4>Visit Us</h4>
+              <p>7C, Gbendumbu Road, Off Marjay Town,<br>Goderich, Freetown, Sierra Leone</p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <div>
+              <h4>Call Us</h4>
+              <p><a href="tel:+23275760016">+232 75 760 016</a><br><a href="tel:+23278964024">+232 78 964 024</a></p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            </div>
+            <div>
+              <h4>Email Us</h4>
+              <p><a href="mailto:hora.dovepratt@gmail.com">hora.dovepratt@gmail.com</a></p>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-item-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <h4>Business Hours</h4>
+              <p>Monday – Saturday<br>9:00 AM – 6:00 PM</p>
+            </div>
+          </div>
+        </div>
+        <div class="contact-form reveal-right">
+          <h3>Send Us a Message</h3>
+          <form id="contactForm" onsubmit="return false;">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" placeholder="Your name" required />
+              </div>
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="you@example.com" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="subject">Subject</label>
+              <select id="subject" name="subject">
+                <option value="">Select a topic</option>
+                <option value="communications">Dove Communications</option>
+                <option value="solar">Dove Solar</option>
+                <option value="forex">Dove Foreign Exchange</option>
+                <option value="farm">Dove Farm</option>
+                <option value="construction">Dove Construction</option>
+                <option value="petroleum">Dove Petroleum</option>
+                <option value="general">General Inquiry</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" placeholder="Tell us how we can help..." required></textarea>
+            </div>
+            <button type="submit" class="btn-primary" style="width:100%;justify-content:center;">
+              Send Message
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="m22 2-11 11"/></svg>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img src="public/dovegrouplogo-clean.svg" alt="Dove Group Logo" class="logo-img" />
+          <span class="footer-logo-text"><span>DOVE</span> GROUP</span>
+        </div>
+        <p>A diversified Sierra Leonean conglomerate delivering quality services and products that power communities across the region.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#about">About Us</a>
+        <a href="#subsidiaries">Subsidiaries</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#products">Products</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Subsidiaries</h4>
+        <a href="#subsidiaries">Communications</a>
+        <a href="#subsidiaries">Solar</a>
+        <a href="#subsidiaries">Foreign Exchange</a>
+        <a href="#subsidiaries">Farm</a>
+        <a href="#subsidiaries">Construction</a>
+        <a href="#subsidiaries">Petroleum</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="tel:+23275760016">+232 75 760 016</a>
+        <a href="mailto:hora.dovepratt@gmail.com">Email Us</a>
+        <a href="https://www.facebook.com/share/1FQS7qfyXr/" target="_blank" rel="noopener noreferrer">Facebook</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p id="copyright-year"></p>
+      <div class="footer-social">
+        <a href="https://www.facebook.com/share/1FQS7qfyXr/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Copyright year
+    document.getElementById('copyright-year').textContent = '\u00A9 ' + new Date().getFullYear() + ' Dove Group of Companies. All rights reserved. Goderich, Freetown, Sierra Leone.';
+
+    // ========== LOADING ANIMATION ==========
+    const loader = document.getElementById('loader');
+    const loaderBar = document.getElementById('loaderBar');
+    const loaderLogo = document.querySelector('.loader-logo');
+
+    gsap.to(loaderLogo, { opacity: 1, duration: 0.6, ease: 'power2.out' });
+    gsap.to(loaderBar, {
+      width: '100%',
+      duration: 1.8,
+      ease: 'power2.inOut',
+      onComplete: () => {
+        gsap.to(loader, {
+          opacity: 0,
+          duration: 0.5,
+          ease: 'power2.in',
+          onComplete: () => {
+            loader.style.display = 'none';
+            initHeroAnimations();
+          }
+        });
+      }
+    });
+
+    // ========== THREE.JS HERO BACKGROUND ==========
+    const canvas = document.getElementById('hero-canvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 5;
+
+    // Floating 3D particles
+    const particleCount = 80;
+    const particleGeometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    const scales = new Float32Array(particleCount);
+    const colors = new Float32Array(particleCount * 3);
+
+    const red = new THREE.Color(0xCC0000);
+    const yellow = new THREE.Color(0xFFC107);
+
+    for (let i = 0; i < particleCount; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 15;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 10;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 10;
+      scales[i] = Math.random() * 2 + 0.5;
+      const color = Math.random() > 0.5 ? red : yellow;
+      colors[i * 3] = color.r;
+      colors[i * 3 + 1] = color.g;
+      colors[i * 3 + 2] = color.b;
+    }
+
+    particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    particleGeometry.setAttribute('aScale', new THREE.BufferAttribute(scales, 1));
+    particleGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+    const particleMaterial = new THREE.ShaderMaterial({
+      vertexShader: `
+        attribute float aScale;
+        varying vec3 vColor;
+        void main() {
+          vColor = color;
+          vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+          gl_PointSize = aScale * (300.0 / -mvPosition.z);
+          gl_Position = projectionMatrix * mvPosition;
+        }
+      `,
+      fragmentShader: `
+        varying vec3 vColor;
+        void main() {
+          float dist = length(gl_PointCoord - vec2(0.5));
+          if (dist > 0.5) discard;
+          float alpha = smoothstep(0.5, 0.1, dist) * 0.4;
+          gl_FragColor = vec4(vColor, alpha);
+        }
+      `,
+      transparent: true,
+      vertexColors: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending
+    });
+
+    const particles = new THREE.Points(particleGeometry, particleMaterial);
+    scene.add(particles);
+
+    // Wireframe torus
+    const torusGeo = new THREE.TorusGeometry(2.5, 0.8, 16, 100);
+    const torusMat = new THREE.MeshBasicMaterial({ color: 0xCC0000, wireframe: true, transparent: true, opacity: 0.06 });
+    const torus = new THREE.Mesh(torusGeo, torusMat);
+    torus.position.set(3, 0, -2);
+    scene.add(torus);
+
+    // Wireframe icosahedron
+    const icoGeo = new THREE.IcosahedronGeometry(1.8, 1);
+    const icoMat = new THREE.MeshBasicMaterial({ color: 0xFFC107, wireframe: true, transparent: true, opacity: 0.05 });
+    const ico = new THREE.Mesh(icoGeo, icoMat);
+    ico.position.set(-4, 1, -3);
+    scene.add(ico);
+
+    let mouseX = 0, mouseY = 0;
+    document.addEventListener('mousemove', (e) => {
+      mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+      mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+    });
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const time = performance.now() * 0.001;
+      particles.rotation.y = time * 0.05;
+      particles.rotation.x = Math.sin(time * 0.03) * 0.1;
+      torus.rotation.x = time * 0.2;
+      torus.rotation.y = time * 0.15;
+      ico.rotation.x = time * 0.15;
+      ico.rotation.z = time * 0.1;
+      camera.position.x += (mouseX * 0.5 - camera.position.x) * 0.02;
+      camera.position.y += (-mouseY * 0.3 - camera.position.y) * 0.02;
+      camera.lookAt(scene.position);
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // ========== HERO ENTRANCE ANIMATIONS ==========
+    function initHeroAnimations() {
+      const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+      tl.to('.hero-badge', { opacity: 1, y: 0, duration: 0.6, from: { opacity: 0, y: 20 } }, 0.1)
+        .to('.hero-title .line-inner', { y: 0, duration: 1, stagger: 0.12 }, 0.2)
+        .to('.hero-subtitle', { opacity: 1, y: 0, duration: 0.8 }, 0.6)
+        .to('.hero-actions', { opacity: 1, y: 0, duration: 0.8 }, 0.8)
+        .to('.hero-stats', { opacity: 1, y: 0, duration: 0.8 }, 1)
+        .to('.scroll-indicator', { opacity: 1, duration: 0.6 }, 1.2);
+    }
+
+    // ========== NAVIGATION SCROLL ==========
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // ========== MOBILE MENU ==========
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('active');
+      mobileMenu.classList.toggle('active');
+    });
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburger.classList.remove('active');
+        mobileMenu.classList.remove('active');
+      });
+    });
+    hamburger.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); hamburger.click(); }
+    });
+
+    // ========== SCROLL REVEAL ==========
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.querySelectorAll('.reveal').forEach(el => {
+      gsap.to(el, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 85%', once: true } });
+    });
+    document.querySelectorAll('.reveal-left').forEach(el => {
+      gsap.to(el, { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 85%', once: true } });
+    });
+    document.querySelectorAll('.reveal-right').forEach(el => {
+      gsap.to(el, { opacity: 1, x: 0, duration: 0.8, ease: 'power3.out', scrollTrigger: { trigger: el, start: 'top 85%', once: true } });
+    });
+
+    // Stagger sub-cards
+    gsap.utils.toArray('.sub-card').forEach((card, i) => {
+      gsap.to(card, { opacity: 1, y: 0, duration: 0.7, delay: i * 0.08, ease: 'power3.out', scrollTrigger: { trigger: card, start: 'top 88%', once: true } });
+    });
+
+    // Gallery items stagger
+    gsap.utils.toArray('.gallery-item').forEach((item, i) => {
+      gsap.to(item, { opacity: 1, y: 0, duration: 0.7, delay: i * 0.08, ease: 'power3.out', scrollTrigger: { trigger: item, start: 'top 90%', once: true } });
+    });
+
+    // Product items stagger
+    gsap.utils.toArray('.product-item').forEach((item, i) => {
+      gsap.to(item, { opacity: 1, y: 0, duration: 0.6, delay: i * 0.06, ease: 'power3.out', scrollTrigger: { trigger: item, start: 'top 90%', once: true } });
+    });
+
+    // ========== PARALLAX ABOUT IMAGE ==========
+    gsap.to('.about-float-badge', {
+      y: -20, scrollTrigger: { trigger: '.about-visual', start: 'top bottom', end: 'bottom top', scrub: 1 }
+    });
+    gsap.to('.about-float-motto', {
+      y: 15, scrollTrigger: { trigger: '.about-visual', start: 'top bottom', end: 'bottom top', scrub: 1 }
+    });
+
+    // ========== STATEMENT TEXT REVEAL ==========
+    const statementText = document.querySelector('.statement-text');
+    if (statementText) {
+      gsap.fromTo(statementText, { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 1.2, ease: 'power3.out', scrollTrigger: { trigger: statementText, start: 'top 80%', once: true } });
+    }
+
+    // ========== SUBSIDIARY CARD GLOW ==========
+    document.querySelectorAll('.sub-card').forEach(card => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(204,0,0,0.06), transparent 50%), linear-gradient(145deg, #1E1E1E, #181818)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.background = 'linear-gradient(145deg, #1E1E1E, #181818)';
+      });
+    });
+
+    // ========== CURSOR GLOW ==========
+    const cursorGlow = document.getElementById('cursorGlow');
+    document.addEventListener('mousemove', (e) => {
+      cursorGlow.style.left = e.clientX + 'px';
+      cursorGlow.style.top = e.clientY + 'px';
+    });
+
+    // ========== SMOOTH SCROLL ==========
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          gsap.to(window, { duration: 1, scrollTo: { y: target, offsetY: 80 }, ease: 'power3.inOut' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

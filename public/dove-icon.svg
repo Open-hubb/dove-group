@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="295 220 230 240">
+  <g transform="matrix(1.3333333,0,0,-1.3333333,0,793.70133)">
+    <g>
+      <g>
+        <!-- Yellow wing feather -->
+        <g transform="translate(461.7118,377.3145)">
+          <path style="fill:#f6c01a;fill-opacity:1;fill-rule:nonzero;stroke:none"
+            d="m 0,0 c 0,0 12.145,11.682 15.943,18.948 0,0 13.025,-48.977 -72.706,-89.01 l -2.33,3.022 c 0,0 -1.51,1.838 0.68,2.406 z" />
+        </g>
+        <!-- Red head -->
+        <g transform="translate(333.061,339.1422)">
+          <path style="fill:#fe0101;fill-opacity:1;fill-rule:nonzero;stroke:none"
+            d="m 0,0 c 0,0 -1.358,3.048 14.626,14.981 0,0 26.349,17.29 49.582,6.08 0,0 -17.136,-24.673 -45.192,-28.394 0,0 -6.251,12.86 -19.016,7.333" />
+        </g>
+        <!-- Orange wing feather -->
+        <g transform="translate(449.8105,388.7016)">
+          <path style="fill:#fe7f02;fill-opacity:1;fill-rule:nonzero;stroke:none"
+            d="m 0,0 c 0,0 10.381,13.275 13.119,21.003 0,0 19.785,-46.658 -59.459,-98.355 l -2.733,2.664 c 0,0 -1.753,1.608 0.335,2.478 z" />
+        </g>
+        <!-- Red body -->
+        <g transform="translate(353.2774,326.2726)">
+          <path style="fill:#fe0101;fill-opacity:1;fill-rule:nonzero;stroke:none"
+            d="m 0,0 c 0,0 58.904,6.017 92.353,102.641 0,0 31.285,-36.37 -44.642,-112.755 0,0 -1.841,-0.411 -0.04,-2.275 0,0 25.271,-33.791 79.364,-24.084 0,0 -73.99,-34.304 -127.035,36.473" />
+        </g>
+        <!-- Red square frame -->
+        <path style="fill:#fe0101;fill-opacity:1;fill-rule:nonzero;stroke:none"
+          d="M 513.785,234.548 H 305.109 V 443.224 H 513.785 Z M 302.264,231.703 H 516.63 V 446.069 H 302.264 Z" />
+      </g>
+    </g>
+  </g>
+</svg>

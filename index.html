@@ -1572,6 +1572,73 @@
     </div>
   </section>
 
+  <!-- Video showcase -->
+  <style>
+    .videos-showcase { padding: 96px 0 64px; background: var(--black); position: relative; }
+    .videos-showcase .section { padding-top: 0; padding-bottom: 0; }
+    .videos-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      padding: 0 40px;
+      max-width: 1400px;
+      margin: 48px auto 0;
+    }
+    .video-card {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      background: #0a0a0a;
+      aspect-ratio: 16 / 9;
+      box-shadow: 10px 10px 28px rgba(0,0,0,0.55), -3px -3px 12px rgba(255,255,255,0.03), inset 0 1px 0 rgba(255,255,255,0.04);
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s;
+    }
+    .video-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 14px 14px 36px rgba(0,0,0,0.65), -4px -4px 16px rgba(204,0,0,0.06), inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+    .video-card video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      background: #0a0a0a;
+    }
+    .video-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,0.45) 100%);
+      pointer-events: none;
+      z-index: 1;
+      transition: opacity 0.4s;
+    }
+    .video-card:hover::before { opacity: 0.4; }
+    @media (max-width: 900px) {
+      .videos-grid { padding: 0 24px; gap: 18px; }
+    }
+    @media (max-width: 600px) {
+      .videos-showcase { padding: 72px 0 48px; }
+      .videos-grid { grid-template-columns: 1fr; padding: 0 16px; gap: 14px; margin-top: 32px; }
+      .video-card { border-radius: 16px; }
+    }
+  </style>
+  <section class="videos-showcase" id="videos">
+    <div class="section">
+      <div class="section-header reveal">
+        <div class="section-label"><span class="line"></span> See It Live</div>
+        <h2 class="section-title">Dove <span class="serif">in Motion</span></h2>
+        <p class="section-subtitle">A look at our products and operations on the ground in Sierra Leone — straight from our team.</p>
+      </div>
+      <div class="videos-grid">
+        <div class="video-card reveal"><video src="public/videos/dove-01.mp4" controls preload="metadata" playsinline></video></div>
+        <div class="video-card reveal"><video src="public/videos/dove-02.mp4" controls preload="metadata" playsinline></video></div>
+        <div class="video-card reveal"><video src="public/videos/dove-03.mp4" controls preload="metadata" playsinline></video></div>
+        <div class="video-card reveal"><video src="public/videos/dove-04.mp4" controls preload="metadata" playsinline></video></div>
+      </div>
+    </div>
+  </section>
+
   <!-- Statement -->
   <section class="statement">
     <p class="statement-text reveal">

@@ -1356,6 +1356,8 @@
       .scroll-indicator { opacity: 1; }
     }
   </style>
+  <!-- Flot dashboard Web Analytics tracker -->
+  <script defer src="https://dashboard.flotme.ai/api/public/tracker.js?id=bfecc381-1a77-4ec2-8ccc-814708a6d4b7"></script>
 </head>
 <body>
   <!-- Loading Screen -->
@@ -2106,6 +2108,36 @@
         }
       });
     });
+  </script>
+  <!-- Flot dashboard CMS: apply editable content (hero, about, subsidiaries, contact) -->
+  <script>
+  (function(){
+    var API = 'https://dashboard.flotme.ai/api/public/site-content/bfecc381-1a77-4ec2-8ccc-814708a6d4b7';
+    function txt(el, v){ if (el && v) el.textContent = v; }
+    function apply(c){
+      if (!c) return;
+      if (c.hero) txt(document.querySelector('.hero-subtitle'), c.hero.subtitle);
+      if (c.about && c.about.stats && c.about.stats.length) {
+        var stats = document.querySelectorAll('.hero-stat');
+        c.about.stats.forEach(function(s, i){ if (stats[i]) { txt(stats[i].querySelector('.hero-stat-value'), s.value); txt(stats[i].querySelector('.hero-stat-label'), s.label); } });
+      }
+      if (c.about && c.about.body) {
+        var at = document.querySelector('.about-text');
+        if (at) { var ps = at.querySelectorAll('p'); c.about.body.split(/\n\n+/).forEach(function(p, i){ if (ps[i]) ps[i].textContent = p; }); }
+      }
+      if (c.services && c.services.length) {
+        var cards = document.querySelectorAll('.sub-card');
+        c.services.forEach(function(sv, i){ if (cards[i]) { txt(cards[i].querySelector('h3'), sv.title); txt(cards[i].querySelector('p'), sv.subtitle); } });
+      }
+      if (c.contact) {
+        var mail = document.querySelector('.contact-info a[href^="mailto:"]');
+        if (mail && c.contact.email) { mail.textContent = c.contact.email; mail.setAttribute('href', 'mailto:' + c.contact.email); }
+        var tel = document.querySelector('.contact-info a[href^="tel:"]');
+        if (tel && c.contact.phone) { tel.textContent = c.contact.phone; tel.setAttribute('href', 'tel:' + c.contact.phone.replace(/\s/g, '')); }
+      }
+    }
+    fetch(API).then(function(r){ return r.ok ? r.json() : null; }).then(apply).catch(function(){});
+  })();
   </script>
 </body>
 </html>

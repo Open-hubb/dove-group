@@ -1226,6 +1226,8 @@
       .checkout-modal { max-height: 95vh; }
     }
   </style>
+  <!-- Flot dashboard Web Analytics tracker -->
+  <script defer src="https://dashboard.flotme.ai/api/public/tracker.js?id=bfecc381-1a77-4ec2-8ccc-814708a6d4b7"></script>
 </head>
 <body>
 
@@ -1371,7 +1373,7 @@
 
   <script>
     // ========== PRODUCT DATA ==========
-    const products = [
+    let products = [
       // Dove Communications
       { id: 1, name: "Samsung Galaxy A16", price: 2500, category: "communications", subsidiary: "Dove Communications", image: "public/PHOTO-2026-04-15-14-15-29.jpg", badge: "badge-communications" },
       { id: 2, name: "Samsung Galaxy A17", price: 3200, category: "communications", subsidiary: "Dove Communications", image: "public/PHOTO-2026-04-15-14-15-29%202.jpg", badge: "badge-communications" },
@@ -1808,11 +1810,23 @@
     });
 
     // ========== INIT ==========
+    const SUBSIDIARY = { communications:'Dove Communications', solar:'Dove Solar', farm:'Dove Farm', construction:'Dove Construction', petroleum:'Dove Petroleum' };
+    function adaptProducts(rows) {
+      return rows.map(function(p){
+        var cat = p.category || '';
+        return { id: p.id, name: p.name, price: Number(p.price), category: cat, subsidiary: SUBSIDIARY[cat] || 'Dove Group', image: p.image || '', badge: 'badge-' + cat };
+      });
+    }
     document.addEventListener('DOMContentLoaded', () => {
       renderProducts(products);
       updateCartUI();
       const yearEl = document.getElementById('footer-year');
       if (yearEl) yearEl.textContent = new Date().getFullYear();
+      // Load products from the Flot dashboard (the bundled list is the fallback).
+      fetch('https://dashboard.flotme.ai/api/public/products/bfecc381-1a77-4ec2-8ccc-814708a6d4b7')
+        .then(function(r){ return r.ok ? r.json() : null; })
+        .then(function(rows){ if (Array.isArray(rows) && rows.length) { products = adaptProducts(rows); applyFilters(); } })
+        .catch(function(){});
     });
   </script>
 </body>

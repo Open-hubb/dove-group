@@ -2137,6 +2137,15 @@
       }
     }
     fetch(API).then(function(r){ return r.ok ? r.json() : null; }).then(apply).catch(function(){});
+    // Live preview: the Flot dashboard CMS editor streams unsaved content via postMessage.
+    if (window.parent !== window) {
+      window.addEventListener('message', function(e){
+        if (e.origin !== 'https://dashboard.flotme.ai') return;
+        if (!e.data || e.data.source !== 'flot-dashboard' || e.data.type !== 'site-content-preview' || !e.data.content) return;
+        apply(e.data.content);
+      });
+      window.parent.postMessage({ source: 'flot-site', type: 'preview-ready' }, '*');
+    }
   })();
   </script>
 </body>

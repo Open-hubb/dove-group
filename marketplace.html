@@ -1706,6 +1706,17 @@
       });
       const flotUrl = flotBaseUrl + '?' + params.toString();
 
+      // Capture the order in the Flot dashboard so the merchant sees full details
+      // under Orders (best-effort — never blocks the payment).
+      try {
+        const orderItems = cart.map(function (i) { return { name: i.name, size: '', qty: i.qty, price: i.price }; });
+        fetch('https://dashboard.flotme.ai/api/public/order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ merchantId: 'bfecc381-1a77-4ec2-8ccc-814708a6d4b7', name: fullName, phone: phoneNumber, address: location, city: location, items: orderItems, total: total, currency: 'Le' }),
+        });
+      } catch (e) { /* ignore */ }
+
       // Close the checkout form modal
       closeCheckout();
 
